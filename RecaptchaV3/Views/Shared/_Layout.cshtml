@@ -15,37 +15,14 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
+    <script src="https://www.google.com/recaptcha/api.js?render=YOUR-SITEKEY-HERE"></script>
+
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">RecaptchaV3</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
-    <partial name="_CookieConsentPartial" />
 
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2020 - RecaptchaV3</p>
-        </footer>
     </div>
 
     <environment include="Development">
@@ -72,3 +49,21 @@
     @RenderSection("Scripts", required: false)
 </body>
 </html>
+<script>
+    $('form').submit(function (e) {
+        e.preventDefault();
+        grecaptcha.ready(function () {
+            grecaptcha.execute('YOUR-SITEKEY-HERE', { action: 'homepage' }).then(function (token) {
+                $.getJSON("/Home/TokenVerify?token=" + token,
+                    function (data) {
+                        if (data) {
+                            $('form').unbind('submit').submit();
+                        }
+                        else {
+                            document.location = '/error.html';
+                        }
+                    });
+            });
+        });
+    });
+</script>
