@@ -3,3 +3,5 @@
 * Then edit clientside integration and serverside integration.
 
 If get to you score is less than `0.5` from Google API, return error page. If score is greater that `0.5` and username-password pair is correct, you are login.  
+
+ > Devto Post: [Post](https://dev.to/huseyinsimsek/usage-of-recaptcha-v3-in-asp-net-core-mvc-project-1gnh "Devto Post")
