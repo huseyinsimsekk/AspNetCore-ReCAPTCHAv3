@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@inject IConfiguration Configuration
+@{
+    var siteKey = Configuration.GetSection("GoogleRecaptcha").GetSection("Sitekey").Value ?? "";
+}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -15,7 +19,7 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
-    <script src="https://www.google.com/recaptcha/api.js?render=YOUR-SITEKEY-HERE"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=@siteKey"></script>
 
 </head>
 <body>
@@ -53,15 +57,15 @@
     $('form').submit(function (e) {
         e.preventDefault();
         grecaptcha.ready(function () {
-            grecaptcha.execute('YOUR-SITEKEY-HERE', { action: 'homepage' }).then(function (token) {
+            grecaptcha.execute('@siteKey', { action: 'homepage' }).then(function (token) {
                 $.getJSON("/Home/TokenVerify?token=" + token,
                     function (data) {
                         if (data) {
                             $('form').unbind('submit').submit();
                         }
                         else {
-                            document.location = '/error.html';
                         }
+                            document.location = @Url.Action("error.html");
                     });
             });
         });
