@@ -1,4 +1,4 @@
-# Example of Google ReCAPTCHA V3 Usage In Asp.Net Core MVC 
+# Google ReCAPTCHA V3 Usage In Asp.Net Core MVC 
 
 ![SS](https://github.com/huseyinsimsekk/Asp.NetCore-ReCAPTCHAv3/blob/master/RecaptchaV3/Screenshot_1.png)
 
