@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RecaptchaV3.Models
 {
-    public class UserModel
+    public class User
     {
         [Display(Name="Name")]
         public string Name { get; set; }

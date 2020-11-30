@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RecaptchaV3.Extensions;
 
 namespace RecaptchaV3
 {
@@ -17,6 +18,7 @@ namespace RecaptchaV3
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IRecaptchaExtension, RecaptchaExtension>();
             services.AddHttpClient();
             services.AddControllersWithViews();
         }

@@ -7,23 +7,18 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using RecaptchaV3.Extensions;
 using RecaptchaV3.Models;
+using RecaptchaV3.Services;
 
 namespace RecaptchaV3.Controllers
 {
     public class HomeController : Controller
     {
-        private IConfiguration _configuration { get; }
-
-        private readonly IHttpClientFactory _clientFactory;
-        private static string googleSecretKey { get; set; }
-        private static string googleRecaptchaVerifyApi { get; set; }
-        public HomeController(IConfiguration configuration, IHttpClientFactory clientFactory)
+        private IRecaptchaExtension _recaptcha;
+        public HomeController(IRecaptchaExtension recaptcha)
         {
-            _configuration = configuration;
-            _clientFactory = clientFactory;
-            googleSecretKey = configuration.GetSection("GoogleRecaptcha").GetSection("Secretkey").Value ?? "";
-            googleRecaptchaVerifyApi = configuration.GetSection("GoogleRecaptcha").GetSection("VefiyAPIAddress").Value ?? "";
+            _recaptcha = recaptcha;
         }
         public IActionResult Index()
         {
@@ -31,42 +26,26 @@ namespace RecaptchaV3.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(UserModel model)
+        public IActionResult Index(User user)
         {
-            var validUser = new UserModel() { Name = "huseyin", Password = "passwd" };
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && UserService.IsValid(user))
             {
-                if (validUser.Name == model.Name && validUser.Password == model.Password)
-                    return RedirectToAction("Welcome", "Home");
-                else
-                    return View();
+                return RedirectToAction("Welcome", "Home");
             }
             return View();
         }
 
         public IActionResult Welcome()
         {
-            ViewData["Message"] = "You are online now!";
-
+            ViewData["Message"] = $"You are online now! Date:{DateTime.Now.ToShortTimeString()}";
             return View();
         }
 
         [HttpGet]
-        public async Task<JsonResult> TokenVerify(string token)
+        public async Task<JsonResult> Verify(string token)
         {
-            var verified = true;
-            TokenResponseModel tokenResponse = new TokenResponseModel() { Success = false };
+            var verified = await _recaptcha.Verify(token);
 
-            using (var client = _clientFactory.CreateClient())
-            {
-                var response = await client.GetStringAsync($"{googleRecaptchaVerifyApi}?secret={googleSecretKey}&response={token}");
-                tokenResponse = JsonConvert.DeserializeObject<TokenResponseModel>(response);
-            }
-
-            // Recaptcha V3 Verify Api send score 0-1. If score is low such as less than 0.5, you can think that it is a bot and return false.     
-            // If token is not success then return false
-            if (!tokenResponse.Success || tokenResponse.Score < (decimal)0.5)
-                verified = false;
             return Json(verified);
         }
     }
