@@ -36,6 +36,9 @@
                         if (data) {
                             $('form').unbind('submit').submit();
                         }
+                        else {
+                            document.location="@Url.Action("Error", "Home")";
+                        }
                     });
             });
         });

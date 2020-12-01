@@ -40,6 +40,11 @@ namespace RecaptchaV3.Controllers
             ViewData["Message"] = $"You are online now! Date:{DateTime.Now.ToShortTimeString()}";
             return View();
         }
+        public IActionResult Error()
+        {
+            ViewBag.ErrorMessage = "There is an error!";
+            return View();
+        }
 
         [HttpGet]
         public async Task<JsonResult> Verify(string token)
