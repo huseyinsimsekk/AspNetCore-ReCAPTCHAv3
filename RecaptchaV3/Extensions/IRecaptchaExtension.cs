@@ -7,6 +7,6 @@ namespace RecaptchaV3.Extensions
 {
     public interface IRecaptchaExtension
     {
-        Task<bool> Verify(string token);
+        Task<bool> VerifyAsync(string token);
     }
 }

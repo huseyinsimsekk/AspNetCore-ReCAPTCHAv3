@@ -30,7 +30,7 @@ namespace RecaptchaV3.Extensions
                 RecaptchaThreshold = threshold;
             }
         }
-        public async Task<bool> Verify(string token)
+        public async Task<bool> VerifyAsync(string token)
         {
             if (String.IsNullOrEmpty(token))
             {

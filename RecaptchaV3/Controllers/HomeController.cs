@@ -49,7 +49,7 @@ namespace RecaptchaV3.Controllers
         [HttpGet]
         public async Task<JsonResult> Verify(string token)
         {
-            var verified = await _recaptcha.Verify(token);
+            var verified = await _recaptcha.VerifyAsync(token);
 
             return Json(verified);
         }
