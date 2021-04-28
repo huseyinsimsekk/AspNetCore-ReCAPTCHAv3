@@ -18,7 +18,7 @@ Note that this is an example repository.
     "Sitekey": "YOUR-GOOGLE-SITEKEY-HERE",
     "Secretkey": "YOUR-GOOGLE-SECRETKEY-HERE"
   },
-"RecaptchaThreshold": "0,5"
+"RecaptchaThreshold": "0.5"
 ```
 
 * Then you can add your UserService. 
