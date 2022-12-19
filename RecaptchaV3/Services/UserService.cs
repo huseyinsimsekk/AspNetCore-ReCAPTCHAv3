@@ -12,15 +12,7 @@ namespace RecaptchaV3.Services
         public static bool IsValid(User user)
         {
             if (user == null) { return false; }
-
-            if (ValidUser.Name == user.Name && ValidUser.Password == user.Password)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return ValidUser.Name == user.Name && ValidUser.Password == user.Password;
         }
     }
 }
